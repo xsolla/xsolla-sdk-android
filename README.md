@@ -60,7 +60,7 @@ Then add the dependency in your module's `build.gradle`:
 
 ```groovy
 dependencies {
-    implementation 'com.xsolla.android:mobile:3.0.42'
+    implementation 'com.xsolla.android:mobile:3.0.43'
 }
 ```
 
