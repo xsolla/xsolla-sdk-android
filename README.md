@@ -1,5 +1,7 @@
 # Xsolla Mobile SDK for Android
 
+![License](https://img.shields.io/github/license/xsolla/xsolla-sdk-android)
+![Latest release](https://img.shields.io/github/v/release/xsolla/xsolla-sdk-android)
 [![Java 11+](https://img.shields.io/badge/Java-11+-orange.svg)](https://www.oracle.com/java/)
 [![Android API 24+](https://img.shields.io/badge/API-24%2B-blue.svg)](https://developer.android.com)
 [![Gradle compatible](https://img.shields.io/badge/Gradle-compatible-brightgreen.svg)](https://gradle.org/)
@@ -174,3 +176,12 @@ PurchasesUpdatedListener purchasesUpdatedListener = (billingResult, purchases) -
 ```
 
 > For the full integration guide, see the [SDK Documentation](https://developers.xsolla.com/sdk/).
+
+## Support
+
+- **GitHub Issues:** [github.com/xsolla/xsolla-sdk-android/issues](https://github.com/xsolla/xsolla-sdk-android/issues)
+- **Developer portal:** [developers.xsolla.com](https://developers.xsolla.com)
+
+## License
+
+Apache 2.0 License. See [LICENSE](./LICENSE).
