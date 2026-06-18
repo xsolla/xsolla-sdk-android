@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.46] - 17-06-2026
+
+### Performance
+
+- `queryProductDetailsAsync` now fetches and caches product details per SKU: only uncached SKUs trigger a backend call, results are reused across subsequent queries until the cache TTL expires, and large SKU sets are split into parallel chunk requests to stay within backend page limits and avoid rate limiting
+
+### Changed
+
+- Removed transitive dependencies on `com.xsolla.android:store` and `com.xsolla.android:inventory`; the required functionality is now built into the SDK directly
+
+### Added
+
+- Added `productCacheTtlMillis` to `ConfigWithoutIntegration.Common` to control how long cached product details remain valid (default: indefinite)
+- Added `maxItemsPerProductRequest` to `ConfigWithoutIntegration.Common` to cap the number of SKUs per backend request when fetching uncached products (default: backend page cap of 50)
+- Added `maxParallelProductRequests` to `ConfigWithoutIntegration.Common` to bound the number of concurrent chunk requests dispatched during a single `queryProductDetailsAsync` call (default: unbounded, relying on OkHttp's per-host concurrency cap)
+
 ## [3.0.45] - 01-06-2026
 
 ### Fixed
