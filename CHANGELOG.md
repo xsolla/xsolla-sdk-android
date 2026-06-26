@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.47] - 26-06-2026
+
+### Added
+
+- Added support for **bundle products**: bundle SKUs resolve through `queryProductDetailsAsync` as products of type `ProductType.BUNDLE` and are purchasable like any other product, `ProductDetails.getBundleDetails()` exposes the bundle's catalog composition (bundle type, total content price, and content items with their SKU, type, name, quantity, and price), and a completed bundle purchase is reported as its individual content items across both live purchase updates and restored purchases (standard bundles only for now)
+
+### Changed
+
+- The product cache now expires entries after 1 hour by default (previously cached indefinitely), and `queryProductDetailsAsync` now dispatches at most 4 concurrent chunk requests by default (previously unbounded). Pass `null` for `productCacheTtlMillis` or `maxParallelProductRequests` on `ConfigWithoutIntegration.Common` to restore the never-expire / unbounded behavior
+
+### Fixed
+
+- `queryProductDetailsAsync` now drains backend pagination per chunk: if a chunk response reports that more results remain for the requested SKUs, the still-missing SKUs are re-requested until the backend reports no more remain, rather than being treated as unavailable
+
 ## [3.0.46] - 17-06-2026
 
 ### Performance
