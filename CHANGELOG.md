@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.48] - 29-06-2026
+
+### Added
+
+- Added `allowBundlesAsInApp` to `ConfigWithoutIntegration.Common` (default: `false`): when enabled, a SKU requested as `ProductType.INAPP` that resolves to a bundle is returned instead of being rejected as a type mismatch, letting a caller that does not distinguish in-app products from bundles fetch both in a single `inapp` query (the returned `ProductDetails` still reports its true `bundle` type)
+
 ## [3.0.47] - 26-06-2026
 
 ### Added
