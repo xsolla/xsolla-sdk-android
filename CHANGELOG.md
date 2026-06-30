@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.49] - 30-06-2026
+
+### Changed
+
+- `launchBillingFlow` now rejects a standalone virtual currency product (a SKU resolving to `ProductType.VIRTUAL_CURRENCY`) with `BillingResponseCode.ITEM_UNAVAILABLE` before starting any payment, since such an order completes without crediting the currency balance. Virtual currency is sold through a virtual currency package (a `ProductType.BUNDLE` whose contents credit the balance on purchase); `ProductType.VIRTUAL_CURRENCY` remains usable with `queryPurchasesAsync` to read the owned balance. The check keys on the product's true catalog type, so it also applies to a virtual currency fetched as `inapp` via `allowVirtualCurrencyAsInApp`
+
+### Fixed
+
+- A completed bundle purchase confirmed through the inventory strategy is now reported as its individual content items (both on the live purchase update and the order-status recovery path), matching the events strategy
+
+### Added
+
+- `ProductType.VIRTUAL_CURRENCY`: virtual currency SKUs now resolve through `queryProductDetailsAsync` as this type
+- `allowVirtualCurrencyAsInApp` on `ConfigWithoutIntegration.Common` (default `false`): when enabled, a SKU requested as `inapp` that resolves to a virtual currency is returned instead of rejected as a type mismatch (the `ProductDetails` still reports its true `virtual_currency` type) — mirrors `allowBundlesAsInApp`
+- `BundleDetails.Type` now distinguishes `VIRTUAL_CURRENCY_PACKAGE` and `PARTNER_SIDE_CONTENT` (`UNKNOWN` reserved for unrecognized types)
+- `queryPurchasesAsync(ProductType.VIRTUAL_CURRENCY)` returns the user's owned virtual currency balances (inventory strategy)
+- Nested bundles are now expanded recursively into their leaf content items with quantities multiplied through each level (e.g. a bundle containing a virtual currency package); `ProductDetails.getBundleDetails()` content items expose their own nested contents via `getContents()`
+
 ## [3.0.48] - 29-06-2026
 
 ### Added
