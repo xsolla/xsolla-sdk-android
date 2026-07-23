@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.50] - 23-07-2026
+
+### Added
+
+- `BillingFlowParams.ProductDetailsParams.Builder.setQuantity(int)` (default `1`): the number of units of the product to include in the order. Applies to every product type — a quantity of N on a bundle or virtual currency package multiplies its delivered contents. Read back via `getQuantity()`
+
+### Fixed
+
+- Validating a purchase that delivers multiple content items (such as a bundle) no longer risks intermittent failures from being rate-limited by the store API
+
 ## [3.0.49] - 30-06-2026
 
 ### Changed
