@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.51] - 14-08-2026
+
+### Fixed
+
+- `queryPurchasesAsync(ProductType.INAPP)` no longer reports an owned virtual currency listed in the inventory as an in-app purchase; virtual currency is read with `ProductType.VIRTUAL_CURRENCY`, which returns the owned balance
+- Catalog and event item types are now matched case-insensitively (item `type`, `bundle_type`, and event `notification_type`), so an unexpectedly cased value from the backend no longer resolves to `UNKNOWN` or an unrecognized event
+
+### Changed
+
+- `setExternalTransactionToken()` in `BillingFlowParams` is public now
+
 ## [3.0.50] - 23-07-2026
 
 ### Added
