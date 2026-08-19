@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.52] - 19-08-2026
+
+### Fixed
+
+- Server API calls now report unexpected failures during request building or response handling as an error result instead of letting the exception escape on the calling thread or leave the returned future uncompleted
+
 ## [3.0.51] - 14-08-2026
 
 ### Fixed
