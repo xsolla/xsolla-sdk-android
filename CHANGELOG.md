@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.53] - 28-08-2026
+
+### Fixed
+
+- Requesting a payment or login flow while another one is still open no longer risks the second flow being lost or opening on top of the first; flows are served one at a time, so the next one opens as soon as the current one closes
+- A payment or login flow the system refuses to start (for example when the activity it was requested from is already finishing) now completes with a result instead of hanging, and no longer leaves every later flow unable to open for the rest of the app session
+- Changing a system setting while a payment is open (dark mode, font size, display size, language) or resizing the app in split screen no longer interrupts the flow by recreating the screen that hosts it
+- A malformed payment redirect link sent to the app by another installed app no longer crashes it while a payment is in progress; such a link is now ignored
+- A purchase now completes with a result when the order reports no invoice, or reports only invoices other than the one being awaited, instead of leaving the purchase listener silent for the rest of the session
+- An unexpected internal failure while an asynchronous operation is in flight is now reported instead of being discarded, so a call can no longer be left without a result
+- A payment that succeeded only after an earlier attempt failed (a card declined, then paid with another method) is now reported as the successful purchase, instead of the failed attempt sometimes being reported in its place
+- A `RetryProfile.exponentialBackout(...)` profile with no `maxIntervalMillis` no longer retries with no delay at all, sending its whole attempt budget to the backend as one burst; the delay now grows from `baseIntervalMillis` as documented
+- `maxRandomExtraDelayMillis` on a `RetryProfile.exponentialBackout(...)` profile is now added to the delay between attempts; it previously had no effect on any profile that set it
+- Cancelling a flow through `BillingFlowCanceller` now always reports `USER_CANCELED`; depending on the exact moment the cancellation landed, it could previously report a generic error instead
+
+### Changed
+
+- A `RetryProfile.exponentialBackout(...)` profile now grows its delay as `baseIntervalMillis * 2^n`, matching its documented formula; it previously grew by `e^n`, which is steeper
+- A `RetryProfile.exponentialBackout(...)` profile now makes exactly `maxNumAttempts` attempts, the same as `RetryProfile.uniform(...)` with the same value; it previously made one more
+
 ## [3.0.52] - 19-08-2026
 
 ### Fixed
