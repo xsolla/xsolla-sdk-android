@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.54] - 02-09-2026
+
+### Fixed
+
+- A purchase using a custom redirect URL that keeps the SDK's own scheme and host (`app://xpayment.<applicationId>`, with or without a path) now returns to the app on completion instead of being rejected and pushed back to the browser
+- An unexpected internal failure while opening a payment, login, or browser flow now reaches its callback instead of being silently discarded, so the flow can no longer be left without a result
+- A payment, login, or browser flow's callback throwing while handling its result no longer stalls a flow queued behind it or leaks its own queue slot for the rest of the app session
+- A payment redirect is now checked only against the flow currently on screen, not one still waiting to open, which could wrongly reject it (pushing the user back to the browser) or accept it into the wrong flow
+- A payment redirect resent with a slightly different URL for an already-handled invoice is no longer forwarded again; previously only an exact URL repeat was caught
+
 ## [3.0.53] - 28-08-2026
 
 ### Fixed
