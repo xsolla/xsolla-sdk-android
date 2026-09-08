@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.55] - 08-09-2026
+
+### Added
+
+- `Purchase.getOrigin()` and `Purchase.Origin` (`LIVE`, `EVENTS_RESTORE`, `INVENTORY_RESTORE`): whether a purchase completed in this session or was replayed by one of the two restoration strategies, so an integrator moving between strategies can avoid granting the same content twice
+- `Purchase.isRestored()`: `true` for a replay of an earlier payment under either restoration strategy
+
+### Fixed
+
+- `Purchase.getPurchaseTime()` now reports when the purchase was paid for instead of always returning `0`: the moment the billing flow completed, or the time the backing payment event was recorded for an events-strategy restore. A bundle's content items share one time, and an inventory restore still reports `0`, since the inventory keeps no history
+- A purchase restored from the inventory now keeps the same `getOrderId()` and `getOriginalOrderId()` across repeated `queryPurchasesAsync` calls, instead of drawing them at random each time and so looking like a new purchase to an integrator deduplicating on them
+- The default authentication mode no longer crashes on a device that reports no `ANDROID_ID` (before device setup completes, and on some builds); it is now reported as an error result
+- Social access token authentication no longer fails on a token exchange that returns no refresh token, which is what that route does, and a failure while storing a refreshed token is now reported as an error result rather than escaping
+
 ## [3.0.54] - 02-09-2026
 
 ### Fixed
