@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.56] - 16-09-2026
+
+### Fixed
+
+- Under the Event API restoration strategy, a purchase the player completes in the current session now reports `Purchase.Origin.LIVE` and `isRestored() == false` instead of arriving stamped as a replay from the event backlog, so an integrator branching on the origin to suppress first-purchase UI and rewards on replays no longer suppresses them for real purchases. An externally granted free item reports the same on its first delivery, and a genuine replay out of the backlog still reports `EVENTS_RESTORE`
+
+### Removed
+
+- `XsollaEvent.Payment.toPurchases()` and `XsollaEvent.OrderPaid.toPurchases()` are now internal. Read a feed entry through the event's own accessors, or parse `getJson()` for anything they do not cover
+
 ## [3.0.55] - 08-09-2026
 
 ### Added
