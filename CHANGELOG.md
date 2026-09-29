@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.58] - 29-09-2026
+
+### Added
+
+- Added the argument-less `TokenValue.getExpiryTime()`, returning the custom expiry time if set, otherwise the token's `exp` claim
+- Added an opt-in attribution user ID (`Config.Payments::withAttributionUserId`), sent as `custom_parameters.custom_id` to match MMP purchase events on
+- Added support for partner custom parameters on orders (`BillingFlowParams.Builder::setCustomParameters` / `addCustomParameter`)
+
 ## [3.0.57] - 28-09-2026
 
 ### Fixed
