@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.60] - 12-10-2026
+
+### Changed
+
+- Up to 32 payment views can now wait to open at once instead of 4, so several billing flows launched together each open in turn
+- A failure reported by a billing flow launched for a SKU now names that SKU in its debug message (`sku=<id>`)
+
+### Fixed
+
+- A billing flow, order or product details query whose result handling throws now reports a failure instead of never completing
+- Product details queries, order validation and events requests no longer wait forever when their fetch fails unexpectedly
+- `IntegrationUtils.queryGooglePlayCountryCodeAsync` now calls its callback even when disconnecting from Google Play throws
+- An events poll answer whose `events` field is not an array now logs a warning instead of silently passing for an empty poll
+- Social sign-in now rejects an empty or whitespace-only authorization code in the login response instead of passing it on to the token exchange
+- A payment redirect with an empty or whitespace-only `invoice_id` is now treated as carrying no invoice ID, so it is no longer dropped as a duplicate of another such redirect
+
 ## [3.0.59] - 07-10-2026
 
 ### Changed
