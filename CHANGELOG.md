@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.62] - 04-11-2026
+
+### Fixed
+
+- Widget sign-in (`LoginXsollaWidget`) with a locale set now opens the widget in that locale instead of failing to open
+
 ## [3.0.61] - 02-11-2026
 
 ### Added
