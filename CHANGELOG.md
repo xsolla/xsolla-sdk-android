@@ -5,6 +5,52 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0] - 13-11-2026
+
+### Added
+
+- `LoginXsollaId`: Xsolla ID sign-in through `start`, `refreshToken`, `signOut` and `queryUserInfo`, set up with `LoginXsollaId.Args` (an `XsollaIdClientId`, an `OpenMode` and an optional `XsollaIdRedirectUri`). It answers an `XsollaIdToken` or an `XsollaIdUserInfo`. The default redirect link is `app://xsollaid.<applicationId>`. Register it in the Xsolla ID project exactly as written, with no trailing slash: Xsolla ID matches redirects character for character
+- `LoginXsollaWidget.Args.withRedirectUri(LoginWidgetRedirectUri)`: the widget sign-in can send an `https` redirect URI instead of `app://xlogin.<applicationId>`
+- `XsollaIdRedirectUri.parse` and `LoginWidgetRedirectUri.parse` refuse a scheme or host with uppercase letters
+- `withColorScheme(CustomTabsColorScheme)` on `LoginXsollaWidget.Args` and `LoginXsollaId.Args` opens the sign-in page in a light or dark Custom Tab instead of the system's scheme
+- With `LogLevel.VERBOSE` in the `Config` of a created `BillingClient`, sign-ins and `LoginXsollaId` calls log how long each step and the whole call took, leaving out the time spent in the browser
+- `LoginXsollaWidget.signOut(Context, LoginXsollaWidget.Args, Consumer<Either<Error, Unit>>)`: signs the user out of the widget session on this device, including the one the Login SDK kept, and revokes its refresh tokens. Device ID and social sessions are kept. A `start` or `refreshToken` still running fails as signed out. If only the revoke fails, the user stays signed out and the error is recoverable
+- `TokenValue.toStringObfuscated()` for log lines, and `TokenValue.equals(TokenValue, boolean)`, which can ignore the custom expiry
+- Value-based `equals` and `hashCode` on `TokenValue`, `AuthToken`, `AuthRefreshToken`, `LoginUuid`, `OAuth2ClientId`, `LocaleInfo` and `LoginXsollaWidget.Args`
+
+### Changed
+
+- The widget calls and the device ID and social sign-ins run on the SDK's own login code instead of the Xsolla Login SDK. Signatures, `OpenMode` behaviour and the redirect link `app://xlogin.<applicationId>` are unchanged, and Publisher Account needs no changes
+- Users signed in on an earlier version stay signed in. Rolling back after the upgrade asks them to sign in again
+- Device ID and social sign-ins keep the user's account and now use PKCE
+- Device ID sign-in restores its saved session instead of signing in on every start. A session restored from another device's backup is ignored
+- Each authentication mode keeps its own saved session
+- The widget page opens in any browser that supports Custom Tabs, or in the default browser, instead of only Chrome, Samsung Internet or the Huawei browser
+- The SDK's manifest declares `SignInRedirectActivity` for `app://xlogin.<applicationId>` and `app://xsollaid.<applicationId>`. A sign-in accepts only its own redirect
+- A widget sign-in that gets no redirect fails after 15 minutes instead of waiting forever
+- `LoginXsollaWidget.start` and `refreshToken` run one at a time. A call made while one is running fails at once and opens no widget page
+- `OpenMode.Silent` and `SilentWithInteractiveFallback` renew an expired saved session instead of answering it as valid, so `Silent` can now fail offline. `Silent` accepts any `Context`
+- `refreshToken` with its fallback flag set signs in only when a retry cannot help, such as a rejected refresh token, and never under `OpenMode.Silent`. A network failure answers an error. A failed refresh no longer answers or saves the given session. After a rejected refresh token, `LoginXsollaWidget.refreshToken` answers a valid session already saved for the same client, if there is one
+- `launchBillingFlow`, `consumeAsync`, `validateAsync`, `queryPurchasesAsync` and `queryProductDetailsAsync` renew a session the server stopped accepting and retry once, without a sign-in. In `forJWT` mode this needs a JWT already passed to `JWTRefresher.update`. Purchase restoration under the Event API restoration strategy recovers the same way
+- Under the Inventory API restoration strategy, a `consumeAsync` already retried after a network or server error fails as not recoverable, as the earlier attempt may have consumed the item
+- A failed `validateAsync`, and a failed `consumeAsync` under the Event API restoration strategy, report `isRecoverable()` true for network and server errors
+- Error texts from the login calls have changed. Do not match on them
+- Requests to Xsolla servers time out after 60 seconds
+- Release builds shorten tokens and mask credentials in logs, `AuthToken.toString()` and `AuthRefreshToken.toString()` included
+
+### Removed
+
+- The Xsolla Login SDK (`com.xsolla.android:login`) dependency and its keep rule. If your app uses it, declare it, its keep rules and any library you reached through it yourself. Read the session from the `LoginInfo` the SDK answers, not from `XLogin.getToken()`
+- If your app also uses the Login SDK directly: this SDK moves the Login SDK's saved widget session into its own storage and discards a saved device ID one, `signOut` clears it, and Android shows a chooser for `app://xlogin.<applicationId>`. To avoid it, add `<intent-filter tools:node="removeAll" />` to `ActivityAuthBrowserProxy`. The Login SDK's own widget sign-in then stops working
+
+### Fixed
+
+- Under the Event API restoration strategy, `consumeAsync` no longer fails for a user whose Login token names no project, such as one signed in through an OAuth2 Login client
+- Under the Event API restoration strategy, `endConnection` stops the background purchase checks and answers a purchases query still waiting, and `queryPurchasesAsync` no longer answers events from an earlier connection or the previous user
+- Device ID sign-in rejects an empty or whitespace-only code
+- `consumeAsync`, `validateAsync` and `queryPurchasesAsync` answer their listener with an error when the call fails unexpectedly, instead of never answering
+- `Config.Payments.Activity.CustomTabs` and `TrustedWebActivity` keep the `withInternalTWAProviderBlacklistEnabled` value through every other `with` call
+
 ## [3.0.62] - 04-11-2026
 
 ### Fixed
