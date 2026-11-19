@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.1] - 18-11-2026
+
+### Added
+
+- `LogSettings`, passed with `withLogSettings(LogSettings)` on `LoginXsollaId.Args` and `LoginXsollaWidget.Args`, sets a login call's log level and whether its log lines mask tokens and credentials
+- `Config.Common.withSecretsObfuscated(boolean)` masks tokens and credentials, except payment tokens, in a `BillingClient`'s log lines
+
+### Changed
+
+- Login calls log at the level in their `Args`, `LogLevel.ERROR` by default, instead of at the level of a created `BillingClient`
+- Release builds no longer mask tokens and credentials in log lines unless masking is turned on
+
 ## [3.1.0] - 13-11-2026
 
 ### Added
