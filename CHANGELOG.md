@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.2] - 19-11-2026
+
+### Added
+
+- `ConsumeParams.Builder.setQuantity(int)` consumes part of a multi-unit purchase under the Inventory API restoration strategy
+
+### Changed
+
+- Under the Inventory API restoration strategy, `consumeAsync` no longer resends a consume after a server error or a connection lost once the request was sent. It fails as not recoverable; query the purchases again to see what is still held
+
+### Fixed
+
+- Log lines with masking on no longer show the login access key and PlayFab credentials in a decoded JWT payload
+
 ## [3.1.1] - 18-11-2026
 
 ### Added

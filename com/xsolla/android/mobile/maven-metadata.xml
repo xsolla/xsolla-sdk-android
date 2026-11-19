@@ -3,8 +3,8 @@
   <groupId>com.xsolla.android</groupId>
   <artifactId>mobile</artifactId>
   <versioning>
-    <latest>3.1.1</latest>
-    <release>3.1.1</release>
+    <latest>3.1.2</latest>
+    <release>3.1.2</release>
     <versions>
       <version>3.0.35</version>
       <version>3.0.36</version>
@@ -36,7 +36,8 @@
       <version>3.0.62</version>
       <version>3.1.0</version>
       <version>3.1.1</version>
+      <version>3.1.2</version>
     </versions>
-    <lastUpdated>20261119111117</lastUpdated>
+    <lastUpdated>20261119170044</lastUpdated>
   </versioning>
 </metadata>
